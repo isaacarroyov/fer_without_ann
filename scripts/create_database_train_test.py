@@ -25,26 +25,24 @@ def images_to_dataframe(label,file_path):
         count += 1
     return dataframe
 
-def split_train_test_val_dataframes(dataframe, train_prop=0.6, test_prop=0.2):
+def split_train_test_dataframes(dataframe, train_prop=0.75, test_prop=0.25):
     """
     ...
     """
 
-    val_prop = 1 - (train_prop + test_prop)
-    if val_prop <=0 :
-        print('1 - (train_prop + test_prop) should greater than zero')
+    validate_prop = train_prop + test_prop
+    if validate_prop != 1:
+        print('train_prop + test_prop should greater than zero. Instead is {}'.format(validate_prop))
         return None,None,None
 
     n_obs = dataframe.shape[0]
 
     idx_train = int(n_obs * train_prop)
-    idx_test = int(n_obs * test_prop + idx_train)
 
-    df_train = dataframe.iloc[ : idx_train, : ]
-    df_test = dataframe.iloc[ idx_train : idx_test, : ]
-    df_val = dataframe.iloc[ idx_test : , : ]
+    df_train = dataframe.iloc[ :idx_train, : ]
+    df_test = dataframe.iloc[ idx_train: , : ]
 
-    return df_train, df_test, df_val
+    return df_train, df_test
 
 def create_final_dataframe(list_dataframes):
     df = pd.concat(list_dataframes)
@@ -55,9 +53,8 @@ def create_final_dataframe(list_dataframes):
 file_path_positive = '../data/faces/positives/*.jpg'
 file_path_negative = '../data/faces/negatives/*.jpg'
 
-file_path_train_data = '../data/train_data.csv'
-file_path_test_data = '../data/test_data.csv'
-file_path_val_data = '../data/validation_data.csv'
+file_path_train_data = '../data/training_data.csv'
+file_path_test_data = '../data/testing_data.csv'
 
 # Create positive and negative dataframes
 df_positive = images_to_dataframe(label=1,file_path=file_path_positive)
@@ -66,18 +63,15 @@ df_negative = images_to_dataframe(label=0, file_path=file_path_negative)
 print(' ')
 
 # Create train, test and validation data
-df_positive_train, df_positive_test, df_positive_val = split_train_test_val_dataframes(dataframe=df_positive)
-df_negative_train, df_negative_test, df_negative_val = split_train_test_val_dataframes(dataframe=df_negative)
+df_positive_train, df_positive_test = split_train_test_dataframes(dataframe=df_positive)
+df_negative_train, df_negative_test = split_train_test_dataframes(dataframe=df_negative)
 
 # Concatenate into three dataframes
 df_train = create_final_dataframe(list_dataframes=[df_positive_train, df_negative_train])
 df_test = create_final_dataframe(list_dataframes=[df_positive_test, df_negative_test])
-df_val = create_final_dataframe(list_dataframes=[df_positive_val, df_negative_val])
 
 
 df_train.to_csv(file_path_train_data, index=False, header=False)
 print('Training data -> DONE')
 df_test.to_csv(file_path_test_data, index= False, header= False)
 print('Test data -> DONE')
-df_val.to_csv(file_path_val_data, index= False, header= False)
-print('Validation data -> DONE')
