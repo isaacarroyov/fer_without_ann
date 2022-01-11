@@ -3,10 +3,12 @@
 
 ## Content
 In this repository you can find the notebook and scripts used in the Medium post 
-"Facial Expression Recognition (FER) without Artificial Neural Networks"
+["Facial Expression Recognition (FER) without Artificial Neural Networks"](https://towardsdatascience.com/facial-expression-recognition-fer-without-artificial-neural-networks-4fa981da9724)
 
-[**Data transformation**](https://github.com/isaacarroyov/fer_without_ann/tree/main/scripts)
-[**HOG Descriptor class**](https://github.com/isaacarroyov/fer_without_ann/blob/main/notebooks/OwnTransformers/ImageDescriptors.py)
+<img src = "./images/ig_screenshot_tds_fer_without_ann.png" widt=200px></img>
+
+* [**Data transformation**](https://github.com/isaacarroyov/fer_without_ann/tree/main/scripts)
+* [**HOG Descriptor class**](https://github.com/isaacarroyov/fer_without_ann/blob/main/notebooks/OwnTransformers/ImageDescriptors.py)
 
 ## Software requirements
 If you want to replicate the code I recommend installing the following **Python** libraries:
